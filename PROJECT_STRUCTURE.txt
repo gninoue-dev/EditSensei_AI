@@ -1,0 +1,111 @@
+ÉDITSENSEI_AI/
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── config.py
+│   │   ├── ws_manager.py
+│   │   ├── api/
+│   │   │   ├── __init__.py
+│   │   │   ├── routes.py
+│   │   │   └── websocket.py
+│   │   ├── ai/
+│   │   │   ├── __init__.py
+│   │   │   ├── engine.py
+│   │   │   ├── openai_handler.py
+│   │   │   ├── command_parser.py
+│   │   │   └── prompts.py
+│   │   ├── ae/
+│   │   │   ├── __init__.py
+│   │   │   ├── controller.py
+│   │   │   ├── commands.py
+│   │   │   └── presets.py
+│   │   ├── video/
+│   │   │   ├── __init__.py
+│   │   │   ├── analyzer.py
+│   │   │   ├── beat_detector.py
+│   │   │   └── style_extractor.py
+│   │   └── models/
+│   │       ├── __init__.py
+│   │       └── schemas.py
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── test_ai.py
+│   │   └── test_ae.py
+│   ├── requirements.txt
+│   ├── .env.example
+│   └── run.py
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Chat.tsx
+│   │   │   ├── CommandInput.tsx
+│   │   │   ├── VideoUpload.tsx
+│   │   │   ├── PresetSelector.tsx
+│   │   │   ├── StatusBar.tsx
+│   │   │   └── Console.tsx
+│   │   ├── hooks/
+│   │   │   ├── useWebSocket.ts
+│   │   │   ├── useAE.ts
+│   │   │   └── useAI.ts
+│   │   ├── services/
+│   │   │   ├── api.ts
+│   │   │   └── websocket.ts
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   ├── App.tsx
+│   │   ├── index.css
+│   │   └── main.tsx
+│   ├── public/
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   └── vite.config.ts
+│
+├── ae-plugin/
+│   ├── src/
+│   │   ├── index.jsx (ou .tsx)
+│   │   ├── components/
+│   │   │   ├── CommandPanel.jsx
+│   │   │   └── StatusPanel.jsx
+│   │   ├── lib/
+│   │   │   ├── aeController.js
+│   │   │   └── websocketClient.js
+│   │   └── manifest.xml
+│   ├── build/
+│   └── package.json
+│
+├── ai-engine/
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── edit_style_classifier.py
+│   │   └── action_mapper.py
+│   └── utils.py
+│
+├── video-analysis/
+│   ├── __init__.py
+│   ├── detector.py
+│   ├── transition_detector.py
+│   └── motion_analyzer.py
+│
+├── presets/
+│   ├── aggressive.json
+│   ├── smooth.json
+│   ├── anime.json
+│   ├── gaming.json
+│   └── sync_effects.json
+│
+├── shared/
+│   ├── constants.py
+│   ├── types.py
+│   └── utils.py
+│
+├── websocket-server/
+│   ├── __init__.py
+│   └── server.py
+│
+├── docker-compose.yml
+├── .gitignore
+├── README.md
+└── SETUP.md

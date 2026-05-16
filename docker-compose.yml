@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: editsensei-backend
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=gpt-4-turbo-preview
+      - BACKEND_PORT=8000
+      - BACKEND_HOST=0.0.0.0
+      - FRONTEND_URL=http://frontend:5173
+      - ENVIRONMENT=production
+      - DEBUG=False
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./presets:/app/presets
+    networks:
+      - editsensei
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Frontend React
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: editsensei-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:8000/api
+      - VITE_WS_URL=ws://backend:8000/ws/client
+    networks:
+      - editsensei
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+networks:
+  editsensei:
+    driver: bridge
+
+volumes:
+  backend-uploads:
+  backend-presets:

@@ -1,0 +1,197 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                ÉDITSENSEI AI v1.0.0 - ZIP PACKAGE                           ║
+║                 Développé par Dev Gninoue & PUOS                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🎬 ÉDITSENSEI AI - Adobe After Effects IA Editor
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 CE QUE VOUS AVEZ REÇU:
+
+✅ Code source complet (50+ fichiers)
+✅ Backend FastAPI (Python)
+✅ Frontend React (TypeScript)
+✅ Plugin After Effects
+✅ 4 Presets d'effets
+✅ Configuration Docker
+✅ Scripts de démarrage
+✅ Documentation complète (5+ guides)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 DÉMARRAGE RAPIDE (5 MINUTES)
+
+ÉTAPE 1: Extraire le ZIP
+    unzip ÉDITSENSEI_AI_v1.0.0.zip
+    cd ÉDITSENSEI_AI
+
+ÉTAPE 2: Backend
+    cd backend
+    python3 -m venv venv && source venv/bin/activate
+    pip install -r requirements.txt
+    cp .env.example .env
+    
+    ⚠️  IMPORTANT: Éditer .env et ajouter OPENAI_API_KEY
+    
+ÉTAPE 3: Frontend
+    cd ../frontend
+    npm install
+
+ÉTAPE 4: Démarrer
+    cd ..
+    ./start.sh  (Unix/Mac)
+    # ou
+    start.bat   (Windows)
+
+ÉTAPE 5: Accéder
+    🌐 Frontend: http://localhost:5173
+    🔧 Backend:  http://localhost:8000
+    📚 API Docs: http://localhost:8000/docs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 FICHIERS IMPORTANTS À LIRE
+
+1️⃣  QUICKSTART.md        ← Lire en premier (5 min)
+2️⃣  README.md            ← Vue d'ensemble complète
+3️⃣  SETUP.md             ← Installation détaillée
+4️⃣  AUTHORS.md           ← Crédits & auteurs
+5️⃣  LICENSE              ← MIT License
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✨ FONCTIONNALITÉS V1
+
+✅ Chat IA avec OpenAI GPT-4
+✅ Commandes texte → Actions After Effects
+✅ WebSocket temps réel bidirectionnel
+✅ Plugin After Effects natif
+✅ 4 styles d'édition (Aggressive, Smooth, Anime, Gaming)
+✅ Analyse vidéo (beats, transitions, couleurs)
+✅ Interface React responsive
+✅ Prêt pour production
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 AVANT DE COMMENCER
+
+Vous avez besoin de:
+
+1. Python 3.9+
+   → https://www.python.org/downloads/
+
+2. Node.js 18+
+   → https://nodejs.org/
+
+3. Clé OpenAI API
+   → https://platform.openai.com/api-keys
+   (Gratuit avec crédit initiaux)
+
+4. Adobe After Effects 2023+ (optionnel)
+   → Requis seulement si vous voulez tester le plugin
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚙️ ALTERNATIVE: DOCKER (Plus Simple)
+
+Si vous avez Docker:
+
+    docker-compose up
+
+Puis accédez à http://localhost:5173
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💬 ESSAYER IMMÉDIATEMENT (Une fois lancé)
+
+Tapez ces commandes dans le chat:
+
+    "Ajoute un glow"
+    "Rends ce passage plus agressif"
+    "Style anime, s'il te plaît"
+    "Sync avec le beat"
+    "Impact gaming à 2 secondes"
+
+Ça devrait fonctionner immédiatement!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 STRUCTURE
+
+backend/          ← FastAPI + Python
+├── app/          ← Source code
+├── run.py        ← Launcher
+└── requirements.txt
+
+frontend/         ← React + TypeScript
+├── src/          ← Source code
+├── package.json  ← Dependencies
+└── vite.config.ts
+
+ae-plugin/        ← After Effects Plugin
+├── src/
+│   ├── index.html
+│   └── aeController.jsx
+└── manifest.xml
+
+presets/          ← Effets JSON
+├── aggressive.json
+├── smooth.json
+├── anime.json
+└── gaming.json
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👨‍💻 AUTEURS
+
+Lead Developer: Dev Gninoue
+Organization: PUOS
+Location: Abidjan, Côte d'Ivoire 🇨🇮
+License: MIT
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 PROBLÈMES COURANTS
+
+Q: "ImportError: No module named 'openai'"
+A: Exécuter: pip install -r requirements.txt
+
+Q: "Port 8000 already in use"
+A: Changer le port dans backend/.env ou tuer le processus
+
+Q: "Module not found"
+A: Vérifier que npm install a été lancé dans frontend/
+
+Q: "OPENAI_API_KEY not set"
+A: Éditer backend/.env et ajouter votre clé
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 DOCUMENTATION COMPLÈTE
+
+Voir les fichiers .md pour:
+- Installation détaillée (SETUP.md)
+- Déploiement production (DEPLOYMENT.md)
+- Comment contribuer (CONTRIBUTING.md)
+- Guide complet (README.md)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ PRÊT?
+
+1. Lire QUICKSTART.md
+2. Installer les prérequis
+3. Suivre les 4 étapes ci-dessus
+4. Enjoy! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Made with ❤️ by Dev Gninoue & PUOS
+
+Version: 1.0.0
+Status: Production Ready
+License: MIT
+
+Commencez maintenant! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,59 @@
+{
+  "name": "Gaming",
+  "style": "gaming",
+  "description": "Style gaming avec vitesse et energie",
+  "effects": [
+    {
+      "name": "Shake",
+      "intensity": 0.85,
+      "duration": 0.4
+    },
+    {
+      "name": "Glow",
+      "intensity": 0.7,
+      "duration": 0.6
+    },
+    {
+      "name": "Chromatic",
+      "intensity": 0.5,
+      "duration": 0.3
+    }
+  ],
+  "keyframes": [
+    {
+      "property": "Scale",
+      "value": [95, 95],
+      "time": 0.0
+    },
+    {
+      "property": "Scale",
+      "value": [120, 120],
+      "time": 0.15
+    },
+    {
+      "property": "Scale",
+      "value": [100, 100],
+      "time": 0.35
+    },
+    {
+      "property": "Position",
+      "value": [-5, 0],
+      "time": 0.0
+    },
+    {
+      "property": "Position",
+      "value": [5, 0],
+      "time": 0.1
+    },
+    {
+      "property": "Position",
+      "value": [0, 0],
+      "time": 0.25
+    }
+  ],
+  "transitions": ["Cross Dissolve"],
+  "metadata": {
+    "tags": ["gaming", "fast", "energetic"],
+    "category": "style"
+  }
+}

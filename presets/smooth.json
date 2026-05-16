@@ -1,0 +1,44 @@
+{
+  "name": "Smooth",
+  "style": "smooth",
+  "description": "Style fluide avec transitions douces",
+  "effects": [
+    {
+      "name": "Blur",
+      "intensity": 0.3,
+      "duration": 0.8
+    },
+    {
+      "name": "Glow",
+      "intensity": 0.4,
+      "duration": 1.2
+    }
+  ],
+  "keyframes": [
+    {
+      "property": "Opacity",
+      "value": 0,
+      "time": 0.0
+    },
+    {
+      "property": "Opacity",
+      "value": 100,
+      "time": 0.5
+    },
+    {
+      "property": "Position",
+      "value": [0, 100],
+      "time": 0.0
+    },
+    {
+      "property": "Position",
+      "value": [0, 0],
+      "time": 0.8
+    }
+  ],
+  "transitions": ["Cross Dissolve"],
+  "metadata": {
+    "tags": ["smooth", "elegant", "professional"],
+    "category": "transitions"
+  }
+}

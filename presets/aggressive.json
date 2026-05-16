@@ -1,0 +1,44 @@
+{
+  "name": "Aggressive",
+  "style": "aggressive",
+  "description": "Style agressif avec shake, zoom et glow",
+  "effects": [
+    {
+      "name": "Shake",
+      "intensity": 0.9,
+      "duration": 0.5
+    },
+    {
+      "name": "Glow",
+      "intensity": 0.8,
+      "duration": 1.0
+    },
+    {
+      "name": "Chromatic",
+      "intensity": 0.7,
+      "duration": 0.3
+    }
+  ],
+  "keyframes": [
+    {
+      "property": "Scale",
+      "value": [100, 100],
+      "time": 0.0
+    },
+    {
+      "property": "Scale",
+      "value": [110, 110],
+      "time": 0.2
+    },
+    {
+      "property": "Scale",
+      "value": [100, 100],
+      "time": 0.4
+    }
+  ],
+  "transitions": ["Cross Dissolve"],
+  "metadata": {
+    "tags": ["impact", "dynamic", "fast"],
+    "category": "effects"
+  }
+}

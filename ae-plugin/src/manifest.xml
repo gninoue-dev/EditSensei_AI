@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest xmlns="http://ns.adobe.com/products/extendscript/manifest/2.0">
+    <ExtensionList>
+        <Extension Id="com.editsensei.ae">
+            <Name>ÉDITSENSEI AI</Name>
+            <Version>1.0.0</Version>
+            <Description>Assistant IA pour montage vidéo intelligent dans After Effects</Description>
+            <ui-flags>
+                <ui-flag>Panel</ui-flag>
+            </ui-flags>
+            <Author>ÉDITSENSEI Team</Author>
+            <License>MIT</License>
+        </Extension>
+    </ExtensionList>
+    <ExecutionEnvironment>
+        <Products>
+            <Product name="AEFT" version="2023"/>
+            <Product name="AEFT" version="2024"/>
+        </Products>
+        <Locales>
+            <Locale Code="en_US"/>
+            <Locale Code="fr_FR"/>
+        </Locales>
+        <ABCs>
+            <ABC name="AfterEffectsApplication"/>
+            <ABC name="AfterEffectsComposition"/>
+            <ABC name="AfterEffectsLayer"/>
+        </ABCs>
+    </ExecutionEnvironment>
+    <DispatchInfoList>
+        <DispatchInfo Name="com.editsensei.ae">
+            <Category>Panel</Category>
+            <Geometry w="500" h="800" resizeable="true" />
+        </DispatchInfo>
+    </DispatchInfoList>
+</ExtensionManifest>
