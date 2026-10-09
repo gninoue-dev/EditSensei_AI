@@ -1,0 +1,80 @@
+{
+  "name": "Cinématique",
+  "description": "Bandes cinéma, plans longs, contraste doux : façon bande-annonce.",
+  "cut": {
+    "beats_low": 8,
+    "beats_mid": 4,
+    "beats_high": 2,
+    "on_beat": 0.85
+  },
+  "effects": {
+    "zoom_punch": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.5,
+      "section": 0.3,
+      "strength": 0.3,
+      "duration": 0.8
+    },
+    "shake": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.3,
+      "section": 0,
+      "strength": 0.3,
+      "duration": 0.4
+    },
+    "flash": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.5,
+      "section": 0.3,
+      "strength": 0.7,
+      "duration": 0.2
+    },
+    "blur_whip": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.2,
+      "section": 0.4,
+      "strength": 0.4,
+      "duration": 0.4
+    },
+    "glow": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.3,
+      "section": 0.1,
+      "strength": 0.4,
+      "duration": 1.2
+    },
+    "rgb_split": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0,
+      "section": 0,
+      "strength": 0.2,
+      "duration": 0.2
+    }
+  },
+  "look": {
+    "contrast": 1.1,
+    "saturation": 0.85,
+    "black_bars": true,
+    "vignette": 0.45
+  },
+  "speed": {
+    "slowmo_on_drop": true,
+    "slowmo_factor": 0.35,
+    "slowmo_beats": 4,
+    "speedup_low_energy": 1.0
+  },
+  "fade_in": 1.5,
+  "fade_out": 2.0,
+  "tags": [
+    "film",
+    "trailer"
+  ],
+  "source": "preset",
+  "examples": 1
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>EditSensei AI</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="logo">編</span>
+      <div>
+        <div class="title">EditSensei <b>AI</b></div>
+        <div class="status"><span id="dot" class="dot"></span><span id="statusText">Connexion au cerveau…</span></div>
+      </div>
+    </div>
+    <select id="styleSelect" title="Style de montage"></select>
+  </header>
+
+  <main id="chat" aria-live="polite"></main>
+
+  <div id="chips" class="chips"></div>
+
+  <div class="toolbar">
+    <button id="btnBuild" class="primary" title="Monter avec le style choisi">🎬 Monter</button>
+    <button id="btnLearn" title="Apprendre le style de la vidéo sélectionnée dans le panneau Projet">📚 Apprendre</button>
+    <button id="btnWatch" class="toggle" title="Mode apprenti : je regarde ta compo pendant que tu montes">👀 Apprenti</button>
+    <button id="btnLike" title="Ce montage me plaît : garde-le comme exemple">👍</button>
+  </div>
+
+  <form id="form">
+    <textarea id="input" rows="2" placeholder="Ex. : fais un edit anime de 30 s en vertical, slow-mo au drop…"></textarea>
+    <button id="send" type="submit" aria-label="Envoyer">➤</button>
+  </form>
+
+  <script src="js/CSInterface.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
