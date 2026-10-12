@@ -178,7 +178,7 @@ def render_preview(plan: EditPlan, out_path: str | Path, height: int = 540, prog
             for tx in plan.texts:
                 k = t - tx.t
                 if 0 <= k <= tx.duration:
-                    img = _draw_title(img, tx.text, k, tx.duration, title_cache)
+                    img = _draw_title(img, tx.text, k, tx.duration, title_cache, getattr(tx, "kind", "title") == "subtitle")
 
             proc.stdin.write(img.tobytes())
             if progress and fi % 30 == 0:
@@ -191,31 +191,35 @@ def render_preview(plan: EditPlan, out_path: str | Path, height: int = 540, prog
     return out_path
 
 
-def _draw_title(img: np.ndarray, text: str, k: float, dur: float, cache: dict) -> np.ndarray:
-    """Titre centré avec un « pop » d'entrée et un fondu de sortie."""
+def _draw_title(img: np.ndarray, text: str, k: float, dur: float, cache: dict, subtitle: bool = False) -> np.ndarray:
+    """Titre centré avec un « pop » d'entrée et un fondu de sortie (ou sous-titre sobre en bas du cadre)."""
     h, w = img.shape[:2]
-    key = f"{text}|{w}"
+    key = f"{text}|{w}|{subtitle}"
+    shown = text if subtitle else text.upper()
     if key not in cache:
         from PIL import Image, ImageDraw, ImageFont
-        size = int(h * 0.16)
+        size = int(min(h, w) * 0.055) if subtitle else int(h * 0.16)
         try:
             font = ImageFont.truetype(str(FONT), size)
         except OSError:
             font = ImageFont.load_default()
-        box = ImageDraw.Draw(Image.new("L", (1, 1))).textbbox((0, 0), text.upper(), font=font)
+        box = ImageDraw.Draw(Image.new("L", (1, 1))).textbbox((0, 0), shown, font=font)
         tw, th = box[2] - box[0] + 20, box[3] - box[1] + 30
         layer = Image.new("RGBA", (tw, th), (0, 0, 0, 0))
-        ImageDraw.Draw(layer).text((10 - box[0], 10 - box[1]), text.upper(), font=font, fill=(255, 255, 255, 255),
-                                   stroke_width=max(2, size // 18), stroke_fill=(20, 8, 32, 255))
+        ImageDraw.Draw(layer).text((10 - box[0], 10 - box[1]), shown, font=font, fill=(255, 255, 255, 255),
+                                   stroke_width=max(2, size // (10 if subtitle else 18)),
+                                   stroke_fill=(0, 0, 0, 255) if subtitle else (20, 8, 32, 255))
         cache[key] = np.array(layer)[..., [2, 1, 0, 3]]  # RGBA → BGRA
     title = cache[key]
-    pop = 1.0 + 0.35 * envelope(k, 0.35)
-    alpha_mul = min(1.0, k / 0.12, (dur - k) / 0.4) if dur > 0 else 1.0
+    pop = 1.0 if subtitle else 1.0 + 0.35 * envelope(k, 0.35)
+    fade = 0.08 if subtitle else 0.4
+    alpha_mul = min(1.0, k / min(0.12, fade), (dur - k) / fade) if dur > 0 else 1.0
     th, tw = title.shape[:2]
     s = min(pop, (w * 0.9) / tw * pop)
     t_img = cv2.resize(title, (max(1, int(tw * s)), max(1, int(th * s))), interpolation=cv2.INTER_LINEAR)
     th, tw = t_img.shape[:2]
-    x0, y0 = (w - tw) // 2, (h - th) // 2
+    x0 = (w - tw) // 2
+    y0 = int(h * (0.72 if h > w else 0.86)) - th // 2 if subtitle else (h - th) // 2
     xa, ya, xb, yb = max(0, x0), max(0, y0), min(w, x0 + tw), min(h, y0 + th)
     if xb <= xa or yb <= ya:
         return img

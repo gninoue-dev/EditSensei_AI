@@ -14,7 +14,9 @@ EditSensei_AI/
 │       ├── audio.py          tempo, beats, downbeats, énergie, sections, drops (librosa)
 │       ├── footage.py        mouvement / netteté / coupes internes des clips (OpenCV)
 │       ├── directives.py     consignes FR → Directives (100 % local)
-│       ├── llm.py            Claude optionnel → mêmes Directives (sortie JSON structurée)
+│       ├── providers.py      comptes IA : Claude, Gemini, ChatGPT, DeepSeek, Copilot (compte ou clé API)
+│       ├── llm.py            l'IA connectée → mêmes Directives (JSON)
+│       ├── voice.py          transcription voix → texte : dictée 🎤 et sous-titres (Whisper local / OpenAI / Gemini)
 │       ├── style.py          le modèle de style (rythme, probabilités d'effets, look) + mélange
 │       ├── planner.py        musique + clips + style + consignes → EditPlan
 │       ├── preview.py        rendu MP4 d'un plan sans After Effects (OpenCV + FFmpeg)
@@ -79,3 +81,20 @@ Les styles se mélangent avec `StyleModel.absorb` : le poids d'un nouvel exemple
 ## Pistes d'évolution
 - Un modèle neuronal (par ex. un petit transformeur sur les séquences de beats → effets), entraîné sur la bibliothèque de styles appris quand elle sera assez grande.
 - Analyse du contenu (visages, sujet) pour recadrer intelligemment le vertical.
+
+
+## Les comptes IA (`providers.py`)
+Toutes les IA reçoivent la même consigne (`llm.SYSTEM` + schéma JSON) et doivent renvoyer le même objet ; `extract_json` le retrouve même entouré de texte.
+
+| mode | comment | IA |
+|---|---|---|
+| **compte** | outil officiel en ligne de commande, connecté au compte de l'utilisateur, lancé dans un dossier temporaire vide (`claude -p`, `gemini -p`, `codex exec`, `copilot -p`) | Claude, Gemini, ChatGPT, Copilot |
+| **clé API** | HTTP direct, sans dépendance (Messages API, Gemini `generateContent`, API compatibles OpenAI) | les 5 |
+
+Le panneau lance le cerveau avec un PATH minimal : `find_cli` cherche aussi dans les dossiers habituels de npm, Homebrew, nvm, etc.
+Si l'IA échoue (réseau, compte déconnecté, quota), la conversation retombe sur le parseur local sans bloquer.
+
+## La voix (`voice.py`)
+- Le panneau enregistre le micro (`MediaRecorder`, webm/opus ; `--enable-media-stream` dans le manifeste), coupe tout seul après 1,6 s de silence et envoie l'audio à `POST /transcribe`.
+- FFmpeg convertit tout en WAV mono 16 kHz. Moteurs, dans l'ordre : faster-whisper local (échantillons passés directement, sans PyAV), Whisper d'OpenAI (avec horodatages), Gemini (texte seul).
+- Sous-titres : `captions()` découpe chaque phrase en lignes de 32 caractères maximum et répartit son temps au prorata des lettres ; les lignes deviennent des `texts` de type `subtitle` (calques « 💬 » en bas du cadre dans After Effects, idem dans l'aperçu).

@@ -50,6 +50,7 @@ class TextItem:
     text: str
     t: float
     duration: float
+    kind: str = "title"   # title (titre animé au centre) | subtitle (sous-titre en bas)
 
 
 @dataclass

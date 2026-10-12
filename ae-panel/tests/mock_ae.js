@@ -140,4 +140,5 @@ console.log(JSON.stringify({
   keyframes: calls.keys, effects: calls.effects, shakeExpression: expr.length,
   snapshotLayers: snap.data.layers.length,
   firstLayers: comp._layers.slice(0, 6).map((l) => l.name),
+  names: comp._layers.map((l) => l.name),
 }, null, 1));
