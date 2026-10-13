@@ -97,7 +97,8 @@
     try {
       var fs = require("fs"), path = require("path");
       var file = path.join(cs.getSystemPath(SystemPath.EXTENSION), "config.json");
-      return JSON.parse(fs.readFileSync(file, "utf8"));
+      // PowerShell 5.1 écrit l'UTF-8 avec un BOM, que JSON.parse refuse
+      return JSON.parse(fs.readFileSync(file, "utf8").replace(/^﻿/, ""));
     } catch (e) { return null; }
   }
 

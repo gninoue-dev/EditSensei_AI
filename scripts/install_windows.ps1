@@ -1,4 +1,4 @@
-# EditSensei AI — installation sur Windows (After Effects 2022 ou plus récent)
+﻿# EditSensei AI — installation sur Windows (After Effects 2022 ou plus récent)
 # Clic droit > « Exécuter avec PowerShell », ou :  powershell -ExecutionPolicy Bypass -File scripts\install_windows.ps1
 $ErrorActionPreference = "Stop"
 $Root  = Split-Path -Parent $PSScriptRoot
@@ -35,7 +35,8 @@ if (Test-Path $Dest) { Remove-Item $Dest -Recurse -Force }
 New-Item -ItemType Directory -Path $Dest -Force | Out-Null
 Copy-Item -Path (Join-Path $Panel "*") -Destination $Dest -Recurse -Force
 Remove-Item (Join-Path $Dest "tests") -Recurse -Force -ErrorAction SilentlyContinue
-@{ brainDir = $Brain; python = $Python } | ConvertTo-Json | Set-Content -Encoding UTF8 (Join-Path $Dest "config.json")
+$Json = @{ brainDir = $Brain; python = $Python } | ConvertTo-Json
+[IO.File]::WriteAllText((Join-Path $Dest "config.json"), $Json, (New-Object Text.UTF8Encoding $false))
 
 Write-Host "`nTerminé ! Redémarre After Effects puis : Fenêtre > Extensions > EditSensei AI" -ForegroundColor Green
 Write-Host "Ensuite, branche ton IA dans le panneau : bouton ⚙️ (Claude, Gemini, ChatGPT, DeepSeek ou Copilot)."
