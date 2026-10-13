@@ -33,6 +33,7 @@ class Directives:
     slowmo_on_drop: bool | None = None
     black_bars: bool | None = None
     black_white: bool = False
+    subtitles: bool | None = None           # paroles / sous-titres transcrits automatiquement
     texts: list[dict] = field(default_factory=list)  # {"text", "at": "start"|"drop"|"end"|secondes}
     clip_order: list[int] = field(default_factory=list)  # clips à mettre en premier (index 1..n)
     seed: int = 7
@@ -51,7 +52,7 @@ class Directives:
     def merged(self, other: "Directives") -> "Directives":
         """Applique une nouvelle consigne par-dessus les précédentes."""
         out = Directives.from_dict(self.to_dict())
-        for k in ("style", "duration", "music_start", "aspect", "fps", "slowmo_on_drop", "black_bars"):
+        for k in ("style", "duration", "music_start", "aspect", "fps", "slowmo_on_drop", "black_bars", "subtitles"):
             v = getattr(other, k)
             if v is not None:
                 setattr(out, k, v)
@@ -200,6 +201,10 @@ def parse(message: str) -> Directives:
     if re.search(r"\b(noir et blanc|black and white|n&b|monochrome)\b", t_wo_quotes):
         d.black_white = True
 
+    # sous-titres automatiques : « ajoute les paroles », « sous-titres auto »
+    if re.search(r"\b(sous[- ]?titres?|sous[- ]?titrage|paroles|lyrics|captions?|transcri\w*)\b", t_wo_quotes):
+        d.subtitles = not re.search(r"\b(sans|pas de|enleve|retire|supprime|vire)\s+(?:les\s+|des\s+)?(sous[- ]?titres?|paroles|lyrics|captions?)", t_wo_quotes)
+
     # ordre des clips : « commence par le clip 3 »
     m = re.search(r"(?:commence|ouvre|demarre)\s+(?:par|avec)\s+(?:le\s+)?clip\s*(\d+)", t_wo_quotes)
     if m:
@@ -211,7 +216,7 @@ def parse(message: str) -> Directives:
 
     d.build = bool(
         d.style or d.duration or d.aspect or d.texts or d.energy or d.effect_gain or d.disabled
-        or d.slowmo_on_drop is not None or d.black_bars is not None or d.black_white or d.seed != 7
+        or d.slowmo_on_drop is not None or d.black_bars is not None or d.subtitles is not None or d.black_white or d.seed != 7
         or any(re.search(rf"\b{re.escape(w)}\b", t_wo_quotes) for w in BUILD_WORDS)
     )
     return d
@@ -248,6 +253,10 @@ def describe(d: Directives) -> list[str]:
         out.append("sans bandes cinéma")
     if d.black_white:
         out.append("noir et blanc")
+    if d.subtitles is True:
+        out.append("sous-titres automatiques")
+    elif d.subtitles is False:
+        out.append("sans sous-titres")
     for tx in d.texts:
         out.append(f"texte « {tx['text']} »")
     return out

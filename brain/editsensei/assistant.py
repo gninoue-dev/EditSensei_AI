@@ -14,12 +14,12 @@ import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import llm
+from . import llm, voice
 from .audio import analyze_music
 from .directives import Directives, describe, normalize, parse
 from .footage import analyze_clip
 from .learn import MY_STYLE, learn_from_feedback, learn_from_video
-from .planner import EditPlan, plan_edit
+from .planner import EditPlan, TextItem, plan_edit
 from .style import get_style, list_styles
 
 AUDIO_EXT = {".mp3", ".wav", ".m4a", ".aac", ".flac", ".ogg", ".aif", ".aiff"}
@@ -147,16 +147,30 @@ def handle(message: str, sid: str | None, project: dict | None) -> dict:
     clips = [analyze_clip(p) for p in clip_paths]
     s.count += 1
     plan = plan_edit(music, clips, style, s.directives, music_path, name=f"EditSensei {s.count:02d}")
+    sub_note = _add_subtitles(plan, music_path, clip_paths) if s.directives.subtitles else ""
     s.plan = plan
     s.directives.build = False
     out.update(action="build", plan=plan.to_dict())
     lead = (ai_reply + "\n") if ai_reply else ""
     if not music_path:
         lead += "⚠️ Pas de musique dans le projet : j'ai monté sur un rythme de 120 BPM. Importe un son pour caler les coupes dessus.\n"
-    out["reply"] = lead + plan.summary
+    out["reply"] = lead + plan.summary + sub_note
     out["suggestions"] = ["Plus agressif", "Une autre version", "Slow-mo au drop", "J'aime 👍"]
     _remember(s, message, out["reply"])
     return out
+
+
+def _add_subtitles(plan: EditPlan, music_path: str | None, clip_paths: list[str]) -> str:
+    """Transcrit les paroles (musique, sinon le premier clip) et les ajoute en sous-titres."""
+    src, start = (music_path, plan.music_start) if music_path else (clip_paths[0], 0.0)
+    try:
+        lines = voice.captions(src, start, plan.duration)
+    except voice.VoiceError as e:
+        return f"\n⚠️ Sous-titres impossibles : {e}"
+    if not lines:
+        return "\n💬 Je n'ai entendu aucune parole à sous-titrer."
+    plan.texts += [TextItem(c["text"], c["t"], c["duration"], "subtitle") for c in lines]
+    return f"\n💬 {len(lines)} sous-titres ajoutés depuis « {Path(src).name} »."
 
 
 def _feedback(s: Session, liked: bool, out: dict) -> dict:

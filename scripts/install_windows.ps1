@@ -19,7 +19,7 @@ if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
 Write-Host "Installation du cerveau (peut prendre quelques minutes la première fois)..."
 Push-Location $Brain
 uv venv --python 3.12 .venv
-uv pip install --python .venv\Scripts\python.exe -e ".[claude]"
+uv pip install --python .venv\Scripts\python.exe -e ".[voix]"
 Pop-Location
 $Python = Join-Path $Brain ".venv\Scripts\python.exe"
 
@@ -38,4 +38,8 @@ Remove-Item (Join-Path $Dest "tests") -Recurse -Force -ErrorAction SilentlyConti
 @{ brainDir = $Brain; python = $Python } | ConvertTo-Json | Set-Content -Encoding UTF8 (Join-Path $Dest "config.json")
 
 Write-Host "`nTerminé ! Redémarre After Effects puis : Fenêtre > Extensions > EditSensei AI" -ForegroundColor Green
-Write-Host "Optionnel : pour discuter avec Claude, définis la variable d'environnement ANTHROPIC_API_KEY.`n"
+Write-Host "Ensuite, branche ton IA dans le panneau : bouton ⚙️ (Claude, Gemini, ChatGPT, DeepSeek ou Copilot)."
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+    Write-Host "Pour te connecter avec ton COMPTE (sans clé API), installe Node.js : https://nodejs.org" -ForegroundColor Yellow
+    Write-Host "puis par exemple :  npm install -g @anthropic-ai/claude-code   (ou @google/gemini-cli, @openai/codex, @github/copilot)`n"
+}

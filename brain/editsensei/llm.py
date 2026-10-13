@@ -1,27 +1,24 @@
-"""Conversation enrichie par Claude — OPTIONNELLE.
+"""La conversation pilotée par l'IA connectée (Claude, Gemini, ChatGPT, DeepSeek ou Copilot).
 
-Sans clé, EditSensei comprend déjà tes consignes en local (directives.py).
-Avec une clé Anthropic (variable ANTHROPIC_API_KEY, ou `ant auth login`), Claude :
-- comprend les demandes plus libres (« rends ça plus émouvant vers la fin »),
-- répond naturellement aux questions sur le montage,
-- et traduit tout ça en directives JSON que le monteur applique.
+L'IA est le moteur de la conversation : elle comprend les demandes libres
+(« rends ça plus émouvant vers la fin »), répond aux questions sur le montage
+et traduit tout ça en directives JSON que le monteur applique.
+Le compte se branche dans les réglages du panneau (voir providers.py).
 
-Claude ne touche jamais directement à After Effects : il propose des directives,
-le planificateur local décide et construit. Si l'appel échoue, on retombe
-silencieusement sur le parseur local.
+L'IA ne touche jamais directement à After Effects : elle propose des directives,
+le planificateur local décide et construit. Sans IA connectée, ou si l'appel
+échoue, EditSensei retombe sur son parseur local (directives.py).
 """
 
 from __future__ import annotations
 
 import json
 import logging
-import os
 
+from . import providers
 from .directives import EFFECTS, Directives
 
 log = logging.getLogger("editsensei.llm")
-
-MODEL = os.environ.get("EDITSENSEI_CLAUDE_MODEL", "claude-opus-5-5")
 
 SYSTEM = """Tu es EditSensei, un assistant de montage vidéo intégré à After Effects, spécialisé dans les edits
 rythmés (AMV, edits TikTok, gaming, cinématique). Tu parles français, simplement et avec enthousiasme.
@@ -37,7 +34,10 @@ Règles des directives :
 - "more" / "less" / "disable" : listes d'effets parmi zoom_punch, shake, flash, blur_whip, glow, rgb_split.
 - "slowmo_on_drop", "black_bars" : true / false / null (null = ne pas changer).
 - "texts" : titres à afficher, "at" vaut "start", "drop", "end" ou un nombre de secondes.
+- "subtitles" : true pour ajouter les paroles / sous-titres automatiques, false pour les retirer, null sinon.
 - Les directives sont CUMULATIVES : n'indique que ce que le DERNIER message change.
+
+Réponds UNIQUEMENT avec un objet JSON valide (aucun texte autour, pas de bloc de code) conforme à ce schéma :
 """
 
 SCHEMA = {
@@ -54,6 +54,7 @@ SCHEMA = {
         "disable": {"type": "array", "items": {"type": "string", "enum": list(EFFECTS)}},
         "slowmo_on_drop": {"type": ["boolean", "null"]},
         "black_bars": {"type": ["boolean", "null"]},
+        "subtitles": {"type": ["boolean", "null"]},
         "texts": {
             "type": "array",
             "items": {
@@ -65,72 +66,32 @@ SCHEMA = {
         },
     },
     "required": ["reply", "build", "style", "duration", "aspect", "energy", "more", "less", "disable",
-                 "slowmo_on_drop", "black_bars", "texts"],
+                 "slowmo_on_drop", "black_bars", "subtitles", "texts"],
     "additionalProperties": False,
 }
 
-_client = None
+PROMPT = SYSTEM + json.dumps(SCHEMA, ensure_ascii=False)
 
 
 def available() -> bool:
-    """Claude est utilisable si le SDK est installé et qu'une clé est configurée."""
-    if os.environ.get("EDITSENSEI_NO_LLM"):
-        return False
-    try:
-        import anthropic  # noqa: F401
-    except ImportError:
-        return False
-    return bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")
-                or os.environ.get("ANTHROPIC_PROFILE") or os.path.isdir(os.path.expanduser("~/.config/anthropic")))
-
-
-def _get_client():
-    global _client
-    if _client is None:
-        import anthropic
-        _client = anthropic.Anthropic()
-    return _client
+    """Une IA est connectée et prête."""
+    return providers.active() is not None
 
 
 def interpret(message: str, history: list[dict], styles: list[str], context: str) -> tuple[str, Directives] | None:
-    """Demande à Claude de traduire le message en directives. None si indisponible ou en cas d'échec."""
+    """Demande à l'IA de traduire le message en directives. None si indisponible ou en cas d'échec."""
     if not available():
         return None
-    import anthropic
-
     messages = list(history[-12:]) + [{
         "role": "user",
         "content": f"Styles disponibles : {', '.join(styles)}.\nContexte du projet : {context}\n\nMessage : {message}",
     }]
     try:
-        response = _get_client().beta.messages.create(
-            model=MODEL,
-            max_tokens=2000,
-            system=SYSTEM,
-            messages=messages,
-            output_config={"effort": "low", "format": {"type": "json_schema", "schema": SCHEMA}},
-            # si un filtre de sécurité refuse la demande, l'API bascule seule sur un autre modèle
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-        )
-    except anthropic.AuthenticationError:
-        log.warning("Clé Anthropic invalide : retour au mode local.")
+        data = providers.extract_json(providers.ask(PROMPT, messages))
+    except providers.AIError as e:
+        log.warning("IA indisponible (%s) : retour au mode local.", e)
         return None
-    except anthropic.RateLimitError:
-        log.warning("Limite de requêtes Claude atteinte : retour au mode local.")
-        return None
-    except (anthropic.APIStatusError, anthropic.APIConnectionError) as e:
-        log.warning("Claude indisponible (%s) : retour au mode local.", e)
-        return None
-
-    if response.stop_reason == "refusal":
-        return None
-    text = next((b.text for b in response.content if b.type == "text"), "")
-    try:
-        data = json.loads(text)
-    except json.JSONDecodeError:
-        return None
-    return data.get("reply", ""), to_directives(data)
+    return str(data.get("reply", "")), to_directives(data)
 
 
 def to_directives(data: dict) -> Directives:
@@ -149,6 +110,7 @@ def to_directives(data: dict) -> Directives:
     d.disabled = [e for e in data.get("disable", []) if e in EFFECTS]
     d.slowmo_on_drop = data.get("slowmo_on_drop")
     d.black_bars = data.get("black_bars")
+    d.subtitles = data.get("subtitles")
     for t in data.get("texts", []):
         at = t.get("at", "start")
         try:

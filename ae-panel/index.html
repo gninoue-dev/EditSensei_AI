@@ -14,8 +14,26 @@
         <div class="status"><span id="dot" class="dot"></span><span id="statusText">Connexion au cerveau…</span></div>
       </div>
     </div>
-    <select id="styleSelect" title="Style de montage"></select>
+    <div class="head-actions">
+      <select id="styleSelect" title="Style de montage"></select>
+      <button id="btnSettings" class="icon" title="Comptes IA et voix">⚙️</button>
+    </div>
   </header>
+
+  <section id="settings" class="settings" hidden>
+    <div class="settings-head">
+      <b>🤖 Moteur IA</b>
+      <button id="btnCloseSettings" class="icon" title="Fermer">✕</button>
+    </div>
+    <p class="hint">Branche ton compte : c'est lui qui comprend tes demandes et pilote le montage.
+      Sans IA, EditSensei comprend quand même les consignes simples.</p>
+    <div id="providers"></div>
+    <label class="prov local"><input type="radio" name="provider" value="local"> <span>💻 Local (sans IA)</span></label>
+
+    <div class="settings-head"><b>🎤 Voix</b></div>
+    <label class="row"><input type="checkbox" id="voiceAutoSend"> Envoyer le message dès que j'ai fini de parler</label>
+    <p class="hint" id="voiceInfo"></p>
+  </section>
 
   <main id="chat" aria-live="polite"></main>
 
@@ -29,6 +47,7 @@
   </div>
 
   <form id="form">
+    <button id="mic" type="button" class="mic" title="Parler : clique, parle, je transcris (re-clique pour arrêter)">🎤</button>
     <textarea id="input" rows="2" placeholder="Ex. : fais un edit anime de 30 s en vertical, slow-mo au drop…"></textarea>
     <button id="send" type="submit" aria-label="Envoyer">➤</button>
   </form>

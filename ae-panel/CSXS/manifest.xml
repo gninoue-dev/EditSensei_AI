@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- EditSensei AI — panneau After Effects (CEP 11 : After Effects 2022 et plus récents) -->
-<ExtensionManifest Version="11.0" ExtensionBundleId="com.editsensei" ExtensionBundleVersion="2.0.0"
+<ExtensionManifest Version="11.0" ExtensionBundleId="com.editsensei" ExtensionBundleVersion="3.0.0"
                    ExtensionBundleName="EditSensei AI"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ExtensionList>
-    <Extension Id="com.editsensei.panel" Version="2.0.0"/>
+    <Extension Id="com.editsensei.panel" Version="3.0.0"/>
   </ExtensionList>
   <ExecutionEnvironment>
     <HostList>
@@ -26,6 +26,7 @@
           <CEFCommandLine>
             <Parameter>--enable-nodejs</Parameter>
             <Parameter>--mixed-context</Parameter>
+            <Parameter>--enable-media-stream</Parameter>
           </CEFCommandLine>
         </Resources>
         <Lifecycle>

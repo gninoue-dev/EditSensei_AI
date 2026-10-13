@@ -318,6 +318,7 @@ function es_buildEdit(planJson) {
         // 6. Textes
         for (var ti = 0; ti < (plan.texts || []).length; ti++) {
             var tx = plan.texts[ti];
+            if (tx.kind === "subtitle") { es_subtitle(comp, plan, tx); continue; }
             var tl = comp.layers.addText(tx.text.toUpperCase());
             tl.name = "🔤 " + tx.text;
             tl.label = ES_LABEL;
@@ -363,6 +364,35 @@ function es_buildEdit(planJson) {
 }
 
 /* Adoucit toutes les images clés d'une propriété (easy ease). */
+/* Sous-titre : texte blanc contouré en bas du cadre, apparition/disparition rapides. */
+function es_subtitle(comp, plan, tx) {
+    var tl = comp.layers.addText(tx.text);
+    tl.name = "💬 " + tx.text;
+    tl.label = ES_LABEL;
+    var td = tl.property("ADBE Text Properties").property("ADBE Text Document");
+    var doc = td.value;
+    doc.fontSize = Math.round(Math.min(plan.width, plan.height) * 0.055);
+    doc.fillColor = [1, 1, 1];
+    doc.applyStroke = true;
+    doc.strokeColor = [0, 0, 0];
+    doc.strokeWidth = Math.max(2, Math.round(doc.fontSize / 10));
+    doc.justification = ParagraphJustification.CENTER_JUSTIFY;
+    try { doc.font = "Montserrat-Bold"; } catch (eF) {}
+    td.setValue(doc);
+    var tEnd = Math.min(plan.duration, tx.t + tx.duration);
+    tl.inPoint = tx.t;
+    tl.outPoint = tEnd;
+    tl.property("ADBE Transform Group").property("ADBE Position")
+        .setValue([plan.width / 2, plan.height * (plan.height > plan.width ? 0.72 : 0.86)]);
+    var op = tl.property("ADBE Transform Group").property("ADBE Opacity");
+    var f = Math.min(0.08, (tEnd - tx.t) / 4);
+    op.setValueAtTime(tx.t, 0);
+    op.setValueAtTime(tx.t + f, 100);
+    op.setValueAtTime(tEnd - f, 100);
+    op.setValueAtTime(tEnd, 0);
+    return tl;
+}
+
 function es_ease(prop) {
     try {
         var dims = prop.value instanceof Array ? prop.value.length : 1;
