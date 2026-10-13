@@ -1,0 +1,63 @@
+/* EditSensei — thème « Sakura Night » adapté au panneau sombre d'After Effects */
+:root {
+  --ink: #0E0820; --plum: #241038; --wine: #4A1F4F;
+  --sakura: #FF8FB8; --rose: #FF6B9D; --lilac: #C9B6FF; --gold: #FFD54F;
+  --text: #F3EEFA; --muted: #9C8FB8; --glass: rgba(255,255,255,.07); --stroke: rgba(255,255,255,.14);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  display: flex; flex-direction: column; font: 13px/1.45 "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--text); background: linear-gradient(180deg, var(--ink), var(--plum) 60%, var(--wine));
+  overflow: hidden;
+}
+header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px;
+  border-bottom: 1px solid var(--stroke); background: rgba(14,8,32,.6); }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.logo { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; font-weight: 700;
+  background: linear-gradient(135deg, var(--rose), #B76BFF); box-shadow: 0 0 18px rgba(255,107,157,.45); }
+.title { font-size: 15px; letter-spacing: .3px; }
+.title b { color: var(--sakura); }
+.status { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #888; }
+.dot.on { background: #6EE7A8; box-shadow: 0 0 8px #6EE7A8; }
+.dot.busy { background: var(--gold); animation: pulse 1s infinite; }
+.dot.off { background: #FF6B6B; }
+@keyframes pulse { 50% { opacity: .35; } }
+select { max-width: 130px; background: var(--glass); color: var(--text); border: 1px solid var(--stroke);
+  border-radius: 8px; padding: 5px 6px; font: inherit; }
+select option { background: var(--plum); }
+
+main { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 92%; padding: 9px 12px; border-radius: 14px; white-space: pre-wrap; word-wrap: break-word;
+  animation: rise .25s ease-out; }
+.msg.me { align-self: flex-end; background: linear-gradient(135deg, var(--rose), #B76BFF); border-bottom-right-radius: 4px; }
+.msg.ai { align-self: flex-start; background: var(--glass); border: 1px solid var(--stroke); border-bottom-left-radius: 4px; }
+.msg.sys { align-self: center; font-size: 11px; color: var(--muted); background: none; padding: 2px; }
+.msg.err { align-self: flex-start; background: rgba(255,90,90,.12); border: 1px solid rgba(255,90,90,.4); }
+.msg .tag { display: block; font-size: 10px; letter-spacing: 1.5px; color: var(--sakura); margin-bottom: 3px; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+.typing span { display: inline-block; width: 6px; height: 6px; margin: 0 2px; border-radius: 50%; background: var(--sakura);
+  animation: bounce 1s infinite; }
+.typing span:nth-child(2) { animation-delay: .15s; } .typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes bounce { 50% { transform: translateY(-5px); opacity: .5; } }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 8px; }
+.chip { border: 1px solid var(--stroke); background: var(--glass); color: var(--text); border-radius: 999px;
+  padding: 4px 10px; font: inherit; font-size: 11px; cursor: pointer; }
+.chip:hover { border-color: var(--sakura); }
+
+.toolbar { display: grid; grid-template-columns: 1.3fr 1fr 1fr .5fr; gap: 6px; padding: 0 12px 8px; }
+button { cursor: pointer; font: inherit; color: var(--text); background: var(--glass); border: 1px solid var(--stroke);
+  border-radius: 10px; padding: 7px 6px; transition: .15s; }
+button:hover { border-color: var(--sakura); }
+button:disabled { opacity: .45; cursor: default; }
+button.primary { background: linear-gradient(135deg, var(--rose), #B76BFF); border: none; font-weight: 600; }
+button.toggle.on { background: rgba(255,213,79,.18); border-color: var(--gold); color: var(--gold); }
+
+form { display: flex; gap: 8px; padding: 10px 12px 12px; border-top: 1px solid var(--stroke); background: rgba(14,8,32,.5); }
+textarea { flex: 1; resize: none; background: var(--glass); color: var(--text); border: 1px solid var(--stroke);
+  border-radius: 12px; padding: 8px 10px; font: inherit; outline: none; }
+textarea:focus { border-color: var(--sakura); }
+#send { width: 42px; border-radius: 12px; background: linear-gradient(135deg, var(--rose), #B76BFF); border: none; font-size: 16px; }
+::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 3px; }

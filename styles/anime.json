@@ -1,0 +1,81 @@
+{
+  "name": "Anime",
+  "description": "Impacts violents au drop, flash blanc, RGB split, zooms punchy : l'edit AMV classique.",
+  "cut": {
+    "beats_low": 2,
+    "beats_mid": 1,
+    "beats_high": 0.5,
+    "on_beat": 0.97
+  },
+  "effects": {
+    "zoom_punch": {
+      "beat": 0,
+      "downbeat": 0.6,
+      "drop": 1,
+      "section": 0.5,
+      "strength": 0.7,
+      "duration": 0.3
+    },
+    "shake": {
+      "beat": 0.05,
+      "downbeat": 0.35,
+      "drop": 1,
+      "section": 0.3,
+      "strength": 0.6,
+      "duration": 0.3
+    },
+    "flash": {
+      "beat": 0,
+      "downbeat": 0.15,
+      "drop": 1,
+      "section": 0.4,
+      "strength": 0.9,
+      "duration": 0.12
+    },
+    "blur_whip": {
+      "beat": 0,
+      "downbeat": 0.2,
+      "drop": 0.5,
+      "section": 0.6,
+      "strength": 0.6,
+      "duration": 0.15
+    },
+    "glow": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.8,
+      "section": 0,
+      "strength": 0.5,
+      "duration": 0.6
+    },
+    "rgb_split": {
+      "beat": 0,
+      "downbeat": 0.25,
+      "drop": 1,
+      "section": 0.3,
+      "strength": 0.7,
+      "duration": 0.2
+    }
+  },
+  "look": {
+    "contrast": 1.15,
+    "saturation": 1.15,
+    "black_bars": false,
+    "vignette": 0.25
+  },
+  "speed": {
+    "slowmo_on_drop": true,
+    "slowmo_factor": 0.5,
+    "slowmo_beats": 2,
+    "speedup_low_energy": 1.0
+  },
+  "fade_in": 0.2,
+  "fade_out": 0.5,
+  "tags": [
+    "anime",
+    "amv",
+    "impact"
+  ],
+  "source": "preset",
+  "examples": 1
+}

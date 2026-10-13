@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# EditSensei
+ae-panel/config.json
+*.mp4
+*.wav
+!docs/**/*.mp4
+
+# Systèmes
+.DS_Store
+Thumbs.db

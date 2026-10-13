@@ -1,0 +1,81 @@
+{
+  "name": "Gaming",
+  "description": "Montage de gameplay : coupes sur les temps forts, shakes et zooms sur les kills.",
+  "cut": {
+    "beats_low": 4,
+    "beats_mid": 2,
+    "beats_high": 1,
+    "on_beat": 0.9
+  },
+  "effects": {
+    "zoom_punch": {
+      "beat": 0,
+      "downbeat": 0.4,
+      "drop": 1,
+      "section": 0.4,
+      "strength": 0.6,
+      "duration": 0.3
+    },
+    "shake": {
+      "beat": 0.1,
+      "downbeat": 0.5,
+      "drop": 1,
+      "section": 0.4,
+      "strength": 0.7,
+      "duration": 0.35
+    },
+    "flash": {
+      "beat": 0,
+      "downbeat": 0.1,
+      "drop": 0.7,
+      "section": 0.3,
+      "strength": 0.6,
+      "duration": 0.12
+    },
+    "blur_whip": {
+      "beat": 0,
+      "downbeat": 0.2,
+      "drop": 0.4,
+      "section": 0.5,
+      "strength": 0.5,
+      "duration": 0.15
+    },
+    "glow": {
+      "beat": 0,
+      "downbeat": 0,
+      "drop": 0.4,
+      "section": 0,
+      "strength": 0.4,
+      "duration": 0.5
+    },
+    "rgb_split": {
+      "beat": 0,
+      "downbeat": 0.2,
+      "drop": 0.6,
+      "section": 0.2,
+      "strength": 0.6,
+      "duration": 0.18
+    }
+  },
+  "look": {
+    "contrast": 1.15,
+    "saturation": 1.2,
+    "black_bars": false,
+    "vignette": 0.2
+  },
+  "speed": {
+    "slowmo_on_drop": true,
+    "slowmo_factor": 0.5,
+    "slowmo_beats": 2,
+    "speedup_low_energy": 1.2
+  },
+  "fade_in": 0.2,
+  "fade_out": 0.6,
+  "tags": [
+    "gaming",
+    "valorant",
+    "fortnite"
+  ],
+  "source": "preset",
+  "examples": 1
+}
